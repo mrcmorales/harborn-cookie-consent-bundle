@@ -22,6 +22,8 @@ services:
     ConnectHolland\CookieConsentBundle\Controller\:
         resource: '../../Controller/*'
         public: true
+        tags:
+            - { name: 'controller.service_arguments' }
 
     ConnectHolland\CookieConsentBundle\Cookie\CookieChecker:
         arguments:
