@@ -73,6 +73,11 @@ class CookieConsentFormSubscriber implements EventSubscriberInterface
         $request  = $event->getRequest();
         $response = $event->getResponse();
 
+       // the banner submits the form as a POST to the current URL: skip building it on any other response
+        if (!$event->isMainRequest() || !$request->isMethod('POST') || !$request->request->has('cookie_consent')) {
+            return;
+        }
+
         $form = $this->createCookieConsentForm();
         $form->handleRequest($request);
 
