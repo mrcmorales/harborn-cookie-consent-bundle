@@ -61,7 +61,7 @@ class CookieConsentFormSubscriberTest extends TestCase
 
     public function testOnResponse(): void
     {
-        $request  = new Request();
+        $request  = Request::create('/', 'POST', ['cookie_consent' => []]);
         $response = new Response();
         $event    = $this->getResponseEvent($request, $response);
 
@@ -95,7 +95,7 @@ class CookieConsentFormSubscriberTest extends TestCase
 
     public function testOnResponseWithLoggerDisabled(): void
     {
-        $request  = new Request();
+        $request  = Request::create('/', 'POST', ['cookie_consent' => []]);
         $response = new Response();
         $event    = $this->getResponseEvent($request, $response);
 
@@ -144,10 +144,10 @@ class CookieConsentFormSubscriberTest extends TestCase
         $kernel = $this->createMock(HttpKernelInterface::class);
 
         if (class_exists(ResponseEvent::class)) {
-            return new ResponseEvent($kernel, $request, 200, $response);
+            return new ResponseEvent($kernel, $request, HttpKernelInterface::MAIN_REQUEST, $response);
         } else {
             // Support for Symfony 3.4 & < 4.3
-            return new FilterResponseEvent($kernel, $request, 200, $response);
+            return new FilterResponseEvent($kernel, $request, HttpKernelInterface::MAIN_REQUEST, $response);
         }
     }
 }

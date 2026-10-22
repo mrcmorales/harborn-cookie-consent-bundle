@@ -1,28 +1,31 @@
 <?php
 
-return PhpCsFixer\Config::create()
+$finder = PhpCsFixer\Finder::create()
+    ->in(__DIR__)
+;
+
+return (new PhpCsFixer\Config())
     ->setRules([
         '@Symfony'               => true,
         'declare_strict_types'   => true,
         'ordered_imports'        => true,
-        'psr0'                   => false,
+        'psr_autoloading'        => false,
         'yoda_style'             => false,
         'phpdoc_order'           => true,
         'array_syntax'           => [
             'syntax' => 'short',
         ],
         'binary_operator_spaces' => [
-            'align_equals'       => true,
-            'align_double_arrow' => true,
+            'operators' => ['=' => 'align', '=>' => 'align'],
         ],
         'header_comment'         => [
             'header' => <<<EOH
 This file is part of the ConnectHolland CookieConsentBundle package.
 (c) Connect Holland.
 EOH
-                ,
-            ]
+            ,
+        ],
     ])
-    ->setFinder(
-        PhpCsFixer\Finder::create()->in(__DIR__)
-    );
+    ->setRiskyAllowed(true)
+    ->setFinder($finder)
+;

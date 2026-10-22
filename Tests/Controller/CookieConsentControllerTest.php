@@ -132,21 +132,10 @@ class CookieConsentControllerTest extends TestCase
             ->method('render')
             ->willReturn('test');
 
-        $request = $this->createMock(Request::class);
         $locale  = 'en';
-
-        $request
-            ->expects($this->once())
-            ->method('get')
-            ->with('locale')
-            ->willReturn($locale);
+        $request = new Request(['locale' => $locale]);
 
         $this->translator
-            ->expects($this->once())
-            ->method('setLocale')
-            ->with($locale);
-
-        $request
             ->expects($this->once())
             ->method('setLocale')
             ->with($locale);
@@ -154,6 +143,7 @@ class CookieConsentControllerTest extends TestCase
         $response = $this->cookieConsentController->showIfCookieConsentNotSet($request);
 
         $this->assertInstanceOf(Response::class, $response);
+        $this->assertSame($locale, $request->getLocale());
     }
 
     public function testShowIfCookieConsentNotSetWithCookieConsentSet(): void
